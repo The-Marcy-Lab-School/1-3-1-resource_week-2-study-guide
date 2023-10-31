@@ -420,7 +420,7 @@ When using bracket notation, the value held by the variable `key` will be resolv
 const user = {
   name: 'ben',
   age: 28,
-  canCode = true;
+  canCode: true,
 }
 
 const keys = Object.keys(user);
