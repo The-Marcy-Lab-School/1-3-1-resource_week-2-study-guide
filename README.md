@@ -151,7 +151,9 @@ const marcyStaff = [
   - The first index is `0`
   - The last index is `array.length - 1`
 - To access a single value, use **bracket notation**: `array[index]`
-- We can use bracket notation to reassign individual indexes in an Array
+- Unlike Strings, Arrays are **mutable** - their contents can be modified.
+  - We can use bracket notation to reassign individual indexes in an Array
+  - We can reassign the `.length` property to "shorten" the Array
 
 ```js
 const family = ['Wendy', 'Jon', 'Daniel'];
@@ -162,6 +164,12 @@ console.log(family[family.length - 1]); // Daniel
 family[0] = 'William';
 family[1] = 'Michael';
 console.log(family); // ['William', 'Michael', 'Daniel'];
+
+family.length = 1;
+console.log(family); // ['William']
+
+family.length = 0;
+console.log(family); // []
 ```
 
 - We can iterate through the contents of an Array with a `for` loop:
@@ -198,7 +206,6 @@ If an Array has `arr.length` values in it, then the index of the last value will
 
 ### Mutating Array Methods
 
-* Unlike Strings, Arrays are **mutable** - their contents can be modified.
 * Arrays have a number of methods that mutate the contents of the Array:
 
 ```js
@@ -234,13 +241,15 @@ console.log(nums); // [1, 'hi', 2]
 ```js
 // My partner and I share our kitchen supplies
 let myKitchenSupplies = ["pot", "pan", "rice cooker"];
-let partnerKitchenSupplies = myKitchenSupplies;
+let partnerKitchenSupplies = myKitchenSupplies; // Pass-by-reference
 
-partnerKitchenSupplies.push("spatula");
-console.log(myKitchenSupplies);
+partnerKitchenSupplies.push("spatula"); // Adding a value to the shared Array reference
+console.log(myKitchenSupplies);         // ["pot", "pan", "rice cooker", "spatula"];
+console.log(partnerKitchenSupplies);    // ["pot", "pan", "rice cooker", "spatula"];
 
-myKitchenSupplies = [];
-console.log(partnerKitchenSupplies);
+myKitchenSupplies = [];                 // reassignment breaks the association
+console.log(myKitchenSupplies);         // [];
+console.log(partnerKitchenSupplies);    // ["pot", "pan", "rice cooker", "spatula"];
 ```
 
 - In this situation, there is only one Array **reference** that is held by two different variables.
@@ -399,6 +408,46 @@ console.log(`The value for the key ${key} is ${value}`);
 When using dot notation, we are effectively "hard coding" which property we are accessing. If we write `car.key`, then we are saying we want to access the "key" property of the object `car`, but there is no property with a key named "key". 
 
 When using bracket notation, the value held by the variable `key` will be resolved first, and we'll access the property who key name matches the value held by the variable `key`.
+
+</details>
+
+### `Object.keys()` and `Object.values()`
+
+- The `Object.keys(obj)` **static method** returns an Array containing the keys of the provided Object `obj`. The keys will be Strings.
+- The `Object.values(obj)` static method returns an Array containing the values of the provided Object `obj`.
+
+```js
+const user = {
+  name: 'ben',
+  age: 28,
+  canCode = true;
+}
+
+const keys = Object.keys(user);
+const values = Object.values(user);
+
+console.log(keys);   // ['name', 'age', 'canCode'];
+console.log(values); // ['ben', 28, true];
+```
+- Notice that this is not `user.keys()` or `user.values()` but instead is a method of the `Object` object.
+- This is for flexibility as some objects may implement their own `.keys()` or `.values()` method
+
+**Q: Write a function called `getLongestKey` that takes in an Object and returns the key with the longest name.**
+
+<details><summary>Answer</summary>
+
+```js
+const getLongestKey = (obj) => {
+  let longestKeySoFar = '';
+  const keys = Object.keys(obj);
+  for (let i = 0; i < keys.length; i++) {
+    if (keys[i].length > longestKeySoFar.length) {
+      longestKeySoFar = keys[i];
+    }
+  }
+  return longestKeySoFar;
+}
+```
 
 </details>
 
